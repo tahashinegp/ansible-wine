@@ -1,0 +1,22 @@
+---
+- name: Update apt package cache
+  apt:
+      update_cache: yes
+- name: Install required dependencies
+  apt:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - software-properties-common
+    - gnupg2
+    - git
+    - build-essential
+    - libx11-dev
+    - libfreetype6-dev
+    - libfontconfig1-dev
+    - libxcomposite-dev
+    - libasound2-dev
+    - libgl1-mesa-dev
+    - libgstreamer-plugins-base1.0-dev
+    - libgstreamer1.0-dev
+

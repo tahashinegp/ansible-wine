@@ -1,0 +1,63 @@
+---
+- name: Include operating system family variables
+  include_vars:
+    file: "{{ ansible_os_family }}.yml"
+
+- include_tasks: "Debian.yml"
+  when: ansible_os_family == "Debian"
+
+
+- name: Clone Wine Git repository
+  git:
+        repo: https://gitlab.com/wine/wine.git
+        dest: /tmp/wine
+        version: "wine-2.0.5"
+
+- name: Build Wine
+  command: |
+        cd /tmp/wine
+        ./configure --enable-win64
+        make
+
+- name: Install Wine
+  command: |
+        cd /tmp/wine
+        sudo make install
+
+# For the best results when testing Wine.
+# Most of these have been derived from system packages and these links:
+# https://www.gloriouseggroll.tv/how-to-get-out-of-wine-dependency-hell/
+# https://wiki.winehq.org/Fedora
+- name: Install recommended libraries for Wine
+  become: true
+  package:
+    name: "{{ item }}"
+    state: present
+  loop: "{{ wine_dependencies | flatten }}"
+  when: wine_install_dependencies
+
+- name: Install build dependencies for Wine
+  become: true
+  package:
+    name: "{{ item }}"
+    state: present
+  loop: "{{ wine_build_dependencies | flatten }}"
+  when: wine_install_build_dependencies
+
+
+- name: Update the Apt cache
+  apt:
+        update_cache: yes
+
+- block:
+    - name: Initialize the local Wine directory
+      command: wineboot --init
+
+    - name: Prevent pictures and other formats from opening up with Wine
+      command: "rm -r -f -v {{ item }}"
+      loop: "{{ wine_shorcut_associations }}"
+      args:
+        warn: false
+      changed_when: false
+  become: True
+  become_user: "{{ wine_user }}"

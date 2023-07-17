@@ -1,0 +1,6 @@
+---
+- name: Install Wine 2.0.5 on Ubuntu
+  hosts: wine
+  become: yes
+  roles:
+    - wine

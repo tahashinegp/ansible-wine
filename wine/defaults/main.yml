@@ -1,0 +1,8 @@
+---
+use_distro_packages: True
+# stable, development, or staging
+wine_release: development
+wine_user: "{{ ansible_user }}"
+wine_user_home: "{{ ansible_user_dir }}"
+wine_install_dependencies: True
+wine_install_build_dependencies: False

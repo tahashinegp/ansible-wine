@@ -1,0 +1,6 @@
+---
+wine_shorcut_associations:
+  - "{{ wine_user_home }}/.local/share/mime/packages/x-wine*"
+  - "{{ wine_user_home }}/.local/share/applications/wine-extension*"
+  - "{{ wine_user_home }}/.local/share/icons/hicolor/*/*/application-x-wine-extension*"
+  - "{{ wine_user_home }}/.local/share/mime/application/x-wine-extension*"
