@@ -1,0 +1,27 @@
+---
+# handlers file for phps
+- name: Update PHP alternatives
+  shell: update-alternatives --set php /usr/bin/php5.6
+  async: 0
+  poll: 0
+  listen: "PHP alternatives updated"
+
+- name: 'Start PHP-FPM'
+  service:
+    name: 'php5.6-fpm'
+    state: 'started'
+    enabled: true
+- name: 'Restart PHP-FPM'
+  service:
+    name: 'php5.6-fpm'
+    state: 'restarted'
+
+- name: 'Start PHP7-FPM'
+  service:
+    name: 'php7.1-fpm'
+    state: 'started'
+    enabled: true
+- name: 'Restart PHP7-FPM'
+  service:
+    name: 'php7.1-fpm'
+    state: 'restarted'

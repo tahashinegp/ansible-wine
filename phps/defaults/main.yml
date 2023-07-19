@@ -1,0 +1,39 @@
+---
+# defaults file for phps
+php_apt_repo: "http://packages.dotdeb.org"
+php_apt_key: "https://www.dotdeb.org/dotdeb.gpg"
+php_ppa_repo: "ppa:ondrej/php"
+
+php5_packages:
+  - php5.6-common
+  - php5.6-cli
+  - php5.6-fpm 
+  - php5.6-mysql
+  - php5.6-gd
+  - php5.6-bz2
+  - php5.6-zip
+  - php5.6-json
+  - php5.6-xml
+  - php5.6-curl
+  - php5.6-intl
+  - php5.6-mbstring
+  - php5.6-mcrypt
+  - php5.6-bcmath
+  - php5.6-soap
+  - php5.6-opcache
+php7_packages:
+  - php7.1
+  - php7.1-cgi
+  - php7.1-cli
+  - php7.1-common
+  - php7.1-curl
+  - php7.1-fpm
+  - php7.1-gd
+  - php7.1-intl
+  - php7.1-json
+  - php7.1-mysql
+
+php_primary: {}
+php_secondary: {}
+
+

@@ -1,0 +1,64 @@
+---
+# tasks file for phps
+- name: Install requires package for apt module
+  apt:
+    name:
+      - software-properties-common
+
+- name: php - add repository
+  apt_repository:
+    repo: "{{ php_ppa_repo }}"
+    state: "present"
+
+- name: Update apt package cache
+  apt:
+      update_cache: yes
+
+- name: Install php5.6 
+  apt:
+    name: "{{ item }}"
+    state: "present"
+  with_items: 
+    - "{{ php5_packages }}"
+  register: task_result
+  until: task_result is success
+  retries: 3
+  delay: 10
+  when: php5_packages is defined
+  notify:
+    - Start PHP-FPM
+
+- name: Install php7.1
+  apt:
+    name: "{{ item }}"
+    state: "present"
+  with_items: 
+    - "{{ php7_packages }}"
+
+- name: Set PHP 5.6 as the primary PHP version
+  alternatives:
+    name: php
+    path: /usr/bin/php5.6
+    priority: 10
+  register: php_primary
+
+- name: Set PHP 7.1 as the secondary PHP version
+  alternatives:
+    name: php
+    path: /usr/bin/php7.1
+    priority: 5
+  register: php_secondary
+
+
+- name: Debug PHP alternatives
+  debug:
+    var: php_primary
+
+
+- name: Update PHP alternatives
+  shell: update-alternatives --set php /usr/bin/php5.6
+  async: 0
+  poll: 0
+  
+
+
