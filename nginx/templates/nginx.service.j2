@@ -1,0 +1,15 @@
+[Unit]
+Description=Nginx 1.8.0
+After=network.target
+
+[Service]
+Type=forking
+PIDFile={{ pid_path }}/nginx.pid
+ExecStartPre={{ prefix }}/sbin/nginx -t -c {{ conf_path }}/nginx.conf
+ExecStart={{ prefix }}/sbin/nginx -c {{ conf_path }}/nginx.conf
+ExecReload=/bin/kill -s HUP $MAINPID
+ExecStop=/bin/kill -s QUIT $MAINPID
+PrivateTmp=true
+
+[Install]
+WantedBy=multi-user.target

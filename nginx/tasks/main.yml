@@ -74,3 +74,42 @@
   command: make install
   args:
     chdir: /tmp/nginx-1.8.0
+
+- name: Find Nginx installation directory
+  find:
+    paths: "{{ prefix }}"
+    patterns: "nginx"
+    file_type: directory
+  register: nginx_result
+
+- name: Display Nginx installation directory
+  debug:
+      var: nginx_result.files[0].path
+- name: Create a directory
+  file:
+      path: /var/lib/nginx
+      state: directory
+      mode: "0755"
+
+- name: Copy the systemd service file using Jinja2 template
+  template:
+    src: nginx.service.j2
+    dest: /etc/systemd/system/nginx.service
+    owner: root
+    group: root
+    mode: '0644'
+  notify: "Start nginx"
+  register: result
+
+- name: Reload systemd daemon to pick up the new service file
+  systemd:
+    daemon_reload: yes
+
+- name: Show result
+  debug:
+    msg: "{{ result }}"
+
+- name: Creating environment variable via file in /etc/profile.d
+  args:
+   chdir: /etc/profile.d
+  shell: echo "export NGINX_HOME={{ prefix }}/sbin" > env.sh

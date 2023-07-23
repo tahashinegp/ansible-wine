@@ -9,3 +9,9 @@ required_dependencies:
     - zlib1g-dev
     - openssl
     - libssl-dev
+prefix: /usr/share/nginx
+conf_path: /etc/nginx
+pid_path: /run
+env_variable_name : NGINX_HOME
+env_variable_value: /usr/share/nginx
+
