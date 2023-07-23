@@ -1,0 +1,11 @@
+---
+# defaults file for nginx
+nginx_version: nginx-1.8.0
+required_dependencies: 
+    - build-essential
+    - libpcre3
+    - libpcre3-dev
+    - zlib1g
+    - zlib1g-dev
+    - openssl
+    - libssl-dev
