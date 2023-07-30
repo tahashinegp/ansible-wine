@@ -5,4 +5,5 @@
   roles:
     #- wine
     #- phps
-    - nginx
+    #- nginx
+    - redis

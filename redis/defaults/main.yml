@@ -1,0 +1,8 @@
+---
+# defaults file for redis
+redis_version: 6.0.16
+src_version: http://download.redis.io/releases/redis-6.0.16.tar.gz
+redis_exec_start: "/usr/local/bin/redis-server /etc/redis/redis.local.conf"
+redis_pidfile: "/var/run/redis/redis-server.pid"
+daemonize: no
+redis_logfile: "/var/log/redis/redis.log"

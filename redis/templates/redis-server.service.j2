@@ -1,0 +1,13 @@
+[Unit]
+Description=Redis Server
+After=network.target
+
+[Service]
+Type=simple
+ExecStart={{ redis_exec_start}}
+PIDFile={{ redis_pidfile }}
+ExecStop=/usr/local/bin/redis-cli shutdown
+Restart=always
+
+[Install]
+WantedBy=multi-user.target

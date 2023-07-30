@@ -9,6 +9,11 @@ required_dependencies:
     - zlib1g-dev
     - openssl
     - libssl-dev
+    - libnginx-mod-http-echo               
+    - libnginx-mod-http-geoip2              
+    - libnginx-mod-stream 
+    - nginx-common
+    - nginx-light
 prefix: /usr/share/nginx
 conf_path: /etc/nginx
 pid_path: /run

@@ -1,0 +1,90 @@
+- name: Install required packages for Redis
+  apt:
+    name: '{{ item }}'
+    state: present
+  loop:
+    - build-essential
+    - tcl
+    - libjemalloc-dev
+
+- name: Update apt package cache
+  apt:
+      update_cache: yes
+
+- name: Create redis user and group
+  user:
+    name: redis
+    state: present
+    system: yes
+    shell: /sbin/nologin
+- name: create group
+  group:
+    name: redis
+    state: present
+    system: yes
+
+- name: Download Redis source tarball
+  get_url:
+    url: "{{ src_version }}"
+    dest: "/tmp/redis-{{ redis_version }}.tar.gz"
+
+- name: Extract Redis source tarball
+  unarchive:
+    src: "/tmp/redis-{{ redis_version }}.tar.gz"
+    dest: /tmp
+    remote_src: yes
+
+
+- name: Compile and install Redis
+  shell: |
+    cd "/tmp/redis-{{ redis_version }}"
+    make
+    make install
+
+- name: Create Redis configuration directory
+  file:
+    path: /etc/redis
+    state: directory
+
+- name: Copy Redis configuration file
+  template:
+    src: redis.local.conf.j2
+    dest: /etc/redis/redis.local.conf
+    owner: redis
+    group: redis
+    mode: '0644'
+
+- name: Create Redis data directory
+  file:
+    path: /var/lib/redis
+    state: directory
+    mode: '0755'
+
+- name: Create a log file
+  file:
+      path: /var/log/redis/redis.log
+      state: touch
+      owner: redis
+      group: redis
+      mode: '0755'
+
+
+- name: Copy the systemd service file using Jinja2 template
+  template:
+    src: redis-server.service.j2
+    dest: /etc/systemd/system/redis-server.service
+    owner: root
+    group: root
+    mode: '0644'
+  notify: Start Redis
+
+- name: Reload systemd daemon to pick up the new service file
+  systemd:
+    daemon_reload: yes
+
+
+- name: Restart Redis Service
+  systemd:
+    name: redis-server
+    state: restarted
+
