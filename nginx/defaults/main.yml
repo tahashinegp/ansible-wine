@@ -2,7 +2,6 @@
 # defaults file for nginx
 nginx_version: nginx-1.18.0
 required_dependencies: 
-    - build-essential
     - libpcre3
     - libpcre3-dev
     - zlib1g

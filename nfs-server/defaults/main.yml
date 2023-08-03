@@ -1,0 +1,17 @@
+---
+# defaults file for nfs-server
+nfs_exports:
+  - path: /path/to/share1
+    network: 192.168.1.0/24
+    options: "rw,sync,no_root_squash"
+  - path: /path/to/share2
+    network: 10.0.0.0/24
+    options: "ro,sync"
+
+required_dependecies:
+  - nfs-kernel-server
+  - nfs-common
+
+shared_directory_path: /mnt/shared_directory
+shared_directory_owner: vagrant
+shared_directory_group: vagrant

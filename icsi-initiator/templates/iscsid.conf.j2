@@ -1,0 +1,17 @@
+# roles/open-iscsi/templates/iscsi.conf.j2
+
+# iSCSI Initiator Name
+InitiatorName={{ iscsi_initiator_name }}
+
+# Add node authentication settings
+{% if iscsi_chap_authentication %}
+node.session.auth.authmethod = {{ iscsi_chap_authentication }}
+node.session.auth.username = {{ chap_username }}
+node.session.auth.password = {{ chap_password }}
+{% endif %}
+
+# Add iSCSI target(s) to be connected
+{% for target in iscsi_targets %}
+NodeName={{ target.node_name }}
+TargetAddress={{ target.target_address }}
+{% endfor %}

@@ -1,0 +1,40 @@
+---
+# tasks file for icsi-initiator
+# roles/open-iscsi/tasks/main.yml
+
+- name: Install Open-iSCSI package
+  package:
+    name: "{{ open_iscsi_package }}"
+    state: present
+
+- name: Start and enable iscsid service
+  service:
+    name: iscsid
+    state: started
+    enabled: yes
+
+- name: Set iSCSI initiator name
+  template:
+    src: iscsi.conf..j2
+    dest: /etc/iscsi/{{ iscsi_initiator_name}}.iscsi
+    owner: root
+    group: root
+    mode: '0644'
+  notify:
+    - Restart iSCSI initiator
+
+- name: Set iSCSI initiator configuration
+  template:
+        src: iscsid.conf.j2
+        dest: /etc/iscsi/iscsid.conf
+        owner: root
+        group: root
+        mode: '0644'
+  notify:
+        - Restart iSCSI initiator
+
+
+- name: Discover iSCSI targets
+  command: iscsiadm -m discovery -t sendtargets -p "{{ item.target_address }}"
+  loop: "{{ iscsi_targets }}"
+  changed_when: false

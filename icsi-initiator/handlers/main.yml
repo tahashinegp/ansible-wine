@@ -1,0 +1,7 @@
+---
+# handlers file for icsi-initiator
+
+- name: Restart iSCSI initiator
+  service:
+    name: iscsid
+    state: restarted

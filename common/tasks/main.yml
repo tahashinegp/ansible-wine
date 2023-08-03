@@ -1,0 +1,30 @@
+---
+# tasks file for common
+- name: Install required common_dependency
+  apt:
+    name: "{{ item }}"
+    state: "present"
+  with_items: 
+    - "{{ common_dependency }}"
+
+
+- name: Update the Apt cache
+  apt:
+    update_cache: yes
+
+- name: Download  python 2.7.18
+  get_url:
+    url:  https://www.python.org/ftp/python/2.7.18/Python-2.7.18.tgz
+    dest:  /tmp/Python-2.7.18.tgz
+
+- name: Extract python 2.7.18
+  unarchive:
+    src:  /tmp/Python-2.7.18.tgz
+    dest:  /tmp/
+    remote_src: yes
+
+- name: Install python 2.7.18
+  shell: |
+    cd "/tmp/Python-2.7.18"
+    ./configure --enable-optimizations
+

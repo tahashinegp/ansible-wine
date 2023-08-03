@@ -1,0 +1,13 @@
+[Unit]
+Description=Memcached In-Memory Data Store
+After=network.target
+
+[Service]
+Type=simple
+User=memcache
+Group=memcache
+ExecStart=/usr/local/bin/memcached -m 64 -p 11211 -u memcache -l 127.0.0.1
+Restart=always
+
+[Install]
+WantedBy=multi-user.target

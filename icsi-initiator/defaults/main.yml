@@ -1,0 +1,15 @@
+---
+# defaults file for icsi-initiator
+open_iscsi_package: open-iscsi
+
+# Name of the iSCSI initiator node (optional)
+iscsi_initiator_name: demo_name
+iscsi_chap_authentication: true
+chap_username: demo
+chap_password: demo123
+
+iscsi_targets:
+  - node_name: demo_noode1
+    target_address: 10.0.0.1
+  - node_name: demo_noode2
+    target_address: 10.0.0.2

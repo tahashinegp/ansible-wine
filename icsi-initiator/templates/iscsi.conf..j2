@@ -1,0 +1,10 @@
+# roles/open-iscsi/templates/iscsi.conf.j2
+
+# Set iSCSI initiator name
+InitiatorName={{ iscsi_initiator_name }}
+
+# Add iSCSI target(s) to be connected
+{% for target in iscsi_targets %}
+NodeName={{ target.node_name }}
+TargetAddress={{ target.target_address }}
+{% endfor %}

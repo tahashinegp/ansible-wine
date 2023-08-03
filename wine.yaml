@@ -6,4 +6,8 @@
     #- wine
     #- phps
     #- nginx
-    - redis
+    #- redis
+    #- common
+    #- memcached
+    #- nfs-server
+    - icsi-initiator

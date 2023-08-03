@@ -1,0 +1,46 @@
+---
+# tasks file for nfs-server
+
+- name: Install NFS server packages
+  package:
+    name: "{{ item }}"
+    state: present
+  with_items: "{{ required_dependecies }}"
+
+
+- name: Create NFS export directories
+  file:
+    path: "{{ item.path }}"
+    state: directory
+    mode: '0755'
+  with_items: "{{ nfs_exports }}"
+
+- name: Generate NFS exports configuration
+  template:
+    src: nfs_exports.j2
+    dest: /etc/exports
+
+- name: Check if NFS server is enabled
+  command: "systemctl is-enabled nfs-server"
+  register: nfs_enabled_output
+
+- name: Display NFS server enabled status
+  debug:
+    msg: "NFS server is {{ nfs_enabled_output.stdout }}."
+
+- name: Check NFS server status
+  command: "systemctl status nfs-server"
+  register: nfs_status_output
+
+- name: Display NFS server status
+  debug:
+      msg: "{{ nfs_status_output.stdout }}"
+
+- name: Create the shared directory
+  file:
+    path: "{{ shared_directory_path }}"
+    state: directory
+    mode: '0755'
+    owner: "{{ shared_directory_owner }}"
+    group: "{{ shared_directory_group }}"
+
